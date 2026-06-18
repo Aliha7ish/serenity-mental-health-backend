@@ -90,6 +90,9 @@ def initialize_rag():
             # -------------------------
             # Qdrant
             # -------------------------
+            print("QDRANT_HOST =", os.getenv("QDRANT_HOST"))
+            print("QDRANT_PORT =", os.getenv("QDRANT_PORT"))
+
             qdrant_client = QdrantClient(
                 host=os.getenv("QDRANT_HOST", "localhost"),
                 port=int(os.getenv("QDRANT_PORT", 6333)),

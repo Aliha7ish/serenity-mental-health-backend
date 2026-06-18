@@ -39,7 +39,11 @@ async def lifespan(app: FastAPI):
     logger.info("Starting Serenity API...")
 
     # DB setup
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database initialized")
+    except Exception:
+        logger.exception("Database initialization failed")
 
     # Start RAG in background thread (non-blocking)
     thread = Thread(target=boot_rag, daemon=True)
