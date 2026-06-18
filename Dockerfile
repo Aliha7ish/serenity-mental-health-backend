@@ -52,8 +52,8 @@ RUN useradd -m -u 1000 appuser
 COPY --from=builder /build/.venv /app/.venv
 
 
-# Copy your already generated embeddings
-COPY --from=builder /build/data /app/data
+# copy existing embeddings
+COPY data /app/data
 
 
 COPY --chown=appuser:appuser . .
