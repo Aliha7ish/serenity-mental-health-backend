@@ -72,7 +72,7 @@ def initialize_rag():
             # -------------------------
             # Model
             # -------------------------
-            model = SentenceTransformer("BAAI/bge-m3")
+            model = SentenceTransformer("BAAI/bge-small-en-v1.5")
 
             # -------------------------
             # Embeddings

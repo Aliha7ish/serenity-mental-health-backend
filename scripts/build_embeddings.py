@@ -23,7 +23,7 @@ def build_embeddings():
     print(f"Loaded {len(df)} records")
 
     print("Loading model...")
-    model = SentenceTransformer("BAAI/bge-m3")
+    model = SentenceTransformer("BAAI/bge-small-en-v1.5")
 
     print("Generating embeddings...")
     embeddings = model.encode(
