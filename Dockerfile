@@ -2,10 +2,9 @@
 # Stage 1: Builder
 # ============================================================================
 
-FROM python:3.14-slim AS builder
+FROM python:3.12-slim AS builder
 
 WORKDIR /build
-
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -31,26 +30,12 @@ COPY . .
 RUN uv sync --frozen --no-dev --python-preference only-system
 
 
-# ===============================
-# Build embeddings + HF cache
-# ===============================
-
-ENV HF_HOME=/build/.cache/huggingface
-ENV TRANSFORMERS_CACHE=/build/.cache/huggingface
-
-
-RUN mkdir -p /build/data
-
-
-RUN /build/.venv/bin/python scripts/build_embeddings.py
-
-
 
 # ============================================================================
 # Runtime
 # ============================================================================
 
-FROM python:3.14-slim
+FROM python:3.12-slim
 
 
 WORKDIR /app
@@ -67,11 +52,8 @@ RUN useradd -m -u 1000 appuser
 COPY --from=builder /build/.venv /app/.venv
 
 
+# Copy your already generated embeddings
 COPY --from=builder /build/data /app/data
-
-
-COPY --from=builder /build/.cache/huggingface \
-    /home/appuser/.cache/huggingface
 
 
 COPY --chown=appuser:appuser . .
@@ -80,10 +62,7 @@ COPY --chown=appuser:appuser . .
 RUN mkdir -p \
     /app/db \
     /app/logs \
-    /home/appuser/.cache/huggingface \
-    && chown -R appuser:appuser \
-        /app \
-        /home/appuser/.cache
+    && chown -R appuser:appuser /app
 
 
 USER appuser
@@ -95,13 +74,11 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONPATH=/app
 
-ENV HF_HOME=/home/appuser/.cache/huggingface
-ENV TRANSFORMERS_CACHE=/home/appuser/.cache/huggingface
-
 
 EXPOSE 8000
 
 
 RUN chmod +x start.sh
+
 
 CMD ["./start.sh"]

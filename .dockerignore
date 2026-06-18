@@ -146,3 +146,15 @@ DOCKER_*.md
 .editorconfig
 LICENSE
 
+
+*.pyc
+
+.env
+
+logs/*
+db/*
+
+.cache
+.huggingface
+
+node_modules
