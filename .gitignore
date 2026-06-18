@@ -7,7 +7,7 @@ rag_eval_env/
 eval_env
 *.csv
 responses.txt
-data/
+# data/
 config/ 
 logs/
 *.db
