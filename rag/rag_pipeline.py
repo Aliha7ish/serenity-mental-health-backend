@@ -78,7 +78,7 @@ def initialize_rag():
             # Embeddings
             # -------------------------
             print("Loading cached embeddings...")
-            embeddings = np.load(EMBEDDINGS_PATH)
+            embeddings = np.load(EMBEDDINGS_PATH, mmap_mode="r")
             print("Embeddings loaded from build cache")
 
             # -------------------------
